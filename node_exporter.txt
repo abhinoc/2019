@@ -24,6 +24,8 @@ ExecStart=/usr/local/bin/node_exporter
 WantedBy=multi-user.target
 root@monitoring-client1:~/node_exporter-0.17.0.linux-amd64# 
 
+systemctl daemon-reload
+systemctl start node_exporter
 
 root@monitoring-client1:~/node_exporter-0.17.0.linux-amd64# systemctl status node_exporter
 ● node_exporter.service - Node Exporter
