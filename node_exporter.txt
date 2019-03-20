@@ -1,0 +1,46 @@
+node_exporter:
+
+useradd --no-create-home --shell /bin/false node_exporter
+cp node_exporter /usr/local/bin
+chown node_exporter:node_exporter /usr/local/bin/node_exporter
+vim /etc/systemd/system/node_exporter.service
+
+root@monitoring-client1:~/node_exporter-0.17.0.linux-amd64# cat /etc/systemd/system/node_exporter.service
+[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter
+
+[Install]
+WantedBy=multi-user.target
+root@monitoring-client1:~/node_exporter-0.17.0.linux-amd64# 
+
+
+root@monitoring-client1:~/node_exporter-0.17.0.linux-amd64# systemctl status node_exporter
+● node_exporter.service - Node Exporter
+   Loaded: loaded (/etc/systemd/system/node_exporter.service; enabled; vendor preset: enabled)
+   Active: active (running) since Wed 2019-03-20 13:00:36 UTC; 5min ago
+ Main PID: 2195 (node_exporter)
+    Tasks: 4
+   Memory: 10.8M
+      CPU: 387ms
+   CGroup: /system.slice/node_exporter.service
+           └─2195 /usr/local/bin/node_exporter
+
+Mar 20 13:00:36 monitoring-client1.test.abhishek.com node_exporter[2195]: time="2019-03-20T13:00:36Z" level=info msg=" - sockstat" source="node_exporter.go:97"
+Mar 20 13:00:36 monitoring-client1.test.abhishek.com node_exporter[2195]: time="2019-03-20T13:00:36Z" level=info msg=" - stat" source="node_exporter.go:97"
+Mar 20 13:00:36 monitoring-client1.test.abhishek.com node_exporter[2195]: time="2019-03-20T13:00:36Z" level=info msg=" - textfile" source="node_exporter.go:97"
+Mar 20 13:00:36 monitoring-client1.test.abhishek.com node_exporter[2195]: time="2019-03-20T13:00:36Z" level=info msg=" - time" source="node_exporter.go:97"
+Mar 20 13:00:36 monitoring-client1.test.abhishek.com node_exporter[2195]: time="2019-03-20T13:00:36Z" level=info msg=" - timex" source="node_exporter.go:97"
+Mar 20 13:00:36 monitoring-client1.test.abhishek.com node_exporter[2195]: time="2019-03-20T13:00:36Z" level=info msg=" - uname" source="node_exporter.go:97"
+Mar 20 13:00:36 monitoring-client1.test.abhishek.com node_exporter[2195]: time="2019-03-20T13:00:36Z" level=info msg=" - vmstat" source="node_exporter.go:97"
+Mar 20 13:00:36 monitoring-client1.test.abhishek.com node_exporter[2195]: time="2019-03-20T13:00:36Z" level=info msg=" - xfs" source="node_exporter.go:97"
+Mar 20 13:00:36 monitoring-client1.test.abhishek.com node_exporter[2195]: time="2019-03-20T13:00:36Z" level=info msg=" - zfs" source="node_exporter.go:97"
+Mar 20 13:00:36 monitoring-client1.test.abhishek.com node_exporter[2195]: time="2019-03-20T13:00:36Z" level=info msg="Listening on :9100" source="node_exporter.go:111"
+root@monitoring-client1:~/node_exporter-0.17.0.linux-amd64# 
