@@ -1,0 +1,3 @@
+Disk ALert
+((node_filesystem_avail* 100) / node_filesystem_size) < 10
+This works fine for me for disk usage above 90%
