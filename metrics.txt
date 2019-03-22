@@ -5,3 +5,7 @@ This works fine for me for disk usage above 90%
 
 To Ignore some FS
 ((node_filesystem_avail_bytes  * 100  ) / node_filesystem_size_bytes {fstype!="tmpfs"})
+
+to mesure JVM Heap space, bytes to MB converted...
+
+jvm_memory_bytes_used{area="heap"}/1048576
