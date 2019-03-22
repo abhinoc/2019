@@ -1,0 +1,73 @@
+root@monitoring-node:/etc/alertmanager/template# cat /etc/prometheus/prometheus.rules.yml
+groups:
+  - name: recording_rules
+    interval: 5s
+    rules:
+      - record: client1:node_filesystem_avail_bytes:usage
+        expr: ((node_filesystem_avail_bytes  * 100  ) / node_filesystem_size_bytes {fstype!="tmpfs", fstype!="fuse.lxcfs"})  < 10
+
+      - alert: DiskSpace10%Free
+        expr: ((node_filesystem_avail_bytes  * 100  ) / node_filesystem_size_bytes {fstype!="tmpfs", fstype!="fuse.lxcfs"})  < 10
+        labels:
+          severity: moderate
+        annotations:
+          summary: "Instance {{ $labels.instance }} is low on disk space"
+          description: "{{ $labels.instance }} has only {{ $value }}% free."
+
+
+
+
+root@monitoring-node:/etc/alertmanager/template# cat /etc/prometheus/prometheus.yml
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name: 'node_exporter'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9100']
+  - job_name: 'client1'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['10.39.193.1:9100','10.39.193.1:8081']
+  - job_name: 'postfix-sender01'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['10.39.192.161:9100']
+
+rule_files:
+  - 'prometheus.rules.yml'
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - localhost:9093
+
+
+root@monitoring-node:/etc/alertmanager/template# cat /etc/alertmanager/alertmanager.yml
+global:
+  smtp_smarthost: 'smtp.sendgrid.net:587'
+  smtp_from: 'Alertmanager <alertmanager@example.org>'
+  smtp_auth_username: 'apikey'
+  smtp_auth_password: 'xxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+templates:
+- '/etc/alertmanager/template/*.tmpl'
+
+route:
+  routes:
+  - match:
+      alertname: DiskSpace10%Free
+  repeat_interval: 3h
+  receiver: team-X-mails
+
+receivers:
+- name: 'team-X-mails'
+  email_configs:
+  - to: 'xxxxx@gmail.com'
+root@monitoring-node:/etc/alertmanager/template#
