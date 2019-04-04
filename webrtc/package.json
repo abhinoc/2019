@@ -1,0 +1,18 @@
+{
+  "name": "simple-peer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "budo index.js:bundle.js",
+    "host": "0.0.0.0",
+    "signalhub": "signalhub listen -p 8080"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "budo": "^11.6.1",
+    "getusermedia": "^2.0.1",
+    "signalhub": "^4.9.0"
+  }
+}
