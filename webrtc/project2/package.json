@@ -1,0 +1,21 @@
+{
+  "name": "simple-p2p-with-webrtc",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "budo index.js --ssl --cert=cert.pem --key=key.pem",
+    "signalhub": "signalhub listen -p 8080"
+  },
+  "author": "Kyle Robinson Young <kyle@dontkry.com> (http://dontkry.com)",
+  "license": "MIT",
+  "devDependencies": {
+    "budo": "^11.2.0"
+  },
+  "dependencies": {
+    "https": "^1.0.0",
+    "secure-webrtc-swarm": "^5.0.2",
+    "signalhub": "^4.9.0",
+    "webrtc-swarm": "^2.9.0"
+  }
+}
